@@ -36,7 +36,7 @@ jobs:
         with:
           name: zap-final-report
           path: |
-            report_html.html
-            report_md.md
-            report_json.json
+            **/report_html.html
+            **/report_md.md
+            **/report_json.json
           if-no-files-found: warn
