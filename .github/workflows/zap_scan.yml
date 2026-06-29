@@ -15,15 +15,15 @@ jobs:
         uses: zaproxy/action-baseline@v0.12.0
         with:
           target: 'https://juice-shop.herokuapp.com/'
-          
-      - name: Debug - List generated files
-        run: ls -la
+          # This parameter prevents the action from automatically creating artifacts,
+          # avoiding the name conflict that generates the 400 error
+          fail_action: false
 
-      - name: Load repost as artifact
+      - name: Load report as artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: zap-results
+          name: zap-final-report
           # ZAP action save default report as report_html.html
           path: | 
             report_html.html
