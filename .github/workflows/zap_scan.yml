@@ -16,13 +16,16 @@ jobs:
         with:
           target: 'https://juice-shop.herokuapp.com/'
           
-      - name: Change file permissions (Fix Docker perms)
-        run: sudo chmod -R 777 .
+      - name: Debug - List generated files
+        run: ls -la
 
       - name: Load repost as artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: zap-report
+          name: zap-results
           # ZAP action save default report as report_html.html
-          path: report.html
+          path: | 
+            report_html.html
+            report_md.md
+            report_json.json
