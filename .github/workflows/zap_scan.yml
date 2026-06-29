@@ -15,11 +15,14 @@ jobs:
         uses: zaproxy/action-baseline@v0.12.0
         with:
           target: 'https://juice-shop.herokuapp.com/'
-          cmd_options: '-r report.html' # Tells ZAP to generate an HTML file
-      
-      - name: Upload the report as an artifact
+          
+      - name: Change file permissions (Fix Docker perms)
+        run: sudo chmod -R 777 .
+
+      - name: Load repost as artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: zap-report
+          # ZAP action save default report as report_html.html
           path: report.html
