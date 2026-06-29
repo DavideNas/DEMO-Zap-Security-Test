@@ -5,6 +5,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      target_url:
+        description: 'URL to scan'
+        required: true
+        default: 'https://juice-shop.herokuapp.com/'
 
 permissions:
   contents: read
@@ -22,9 +27,8 @@ jobs:
       - name: Run OWASP ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.15.0
         with:
-          target: "https://juice-shop.herokuapp.com/"
+          target: ${{ github.event.inputs.target_url }} # Using dynamic input!
           fail_action: false
-          artifact_name: zap-report
 
       - name: Upload reports
         if: always()
