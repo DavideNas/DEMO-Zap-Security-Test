@@ -18,7 +18,7 @@ jobs:
           cmd_options: '-r report.html' # Tells ZAP to generate an HTML file
       
       - name: Upload the report as an artifact
-        uses: action/ipload-artifact@v4
+        uses: action/upload-artifact@v4
         if: always()
         with:
           name: zap-report
