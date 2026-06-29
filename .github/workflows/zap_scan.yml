@@ -1,31 +1,38 @@
 name: ZAP Security Scan
 
-on: [push] # Each time you make a 'git push' on repo, test start automatically
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions:
   contents: read
-  issues: write # Required to allow ZAP to create the Issue in your repo
+  issues: write
 
 jobs:
   zap_scan:
+    name: OWASP ZAP Baseline Scan
     runs-on: ubuntu-latest
-    name: Exec a ZAP scan
-    steps:
-      - name: Exec ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.12.0
-        with:
-          target: 'https://juice-shop.herokuapp.com/'
-          # This parameter prevents the action from automatically creating artifacts,
-          # avoiding the name conflict that generates the 400 error
-          fail_action: false
 
-      - name: Load report as artifact
-        uses: actions/upload-artifact@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.15.0
+        with:
+          target: "https://juice-shop.herokuapp.com/"
+          fail_action: false
+          artifact_name: zap-report
+
+      - name: Upload reports
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: zap-final-report
-          # ZAP action save default report as report_html.html
-          path: | 
+          path: |
             report_html.html
             report_md.md
             report_json.json
+          if-no-files-found: warn
