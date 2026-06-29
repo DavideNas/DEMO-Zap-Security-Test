@@ -1,0 +1,14 @@
+name: ZAP Security Scan
+
+on: [push] # Each time you make a 'git push' on repo, test start automatically
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: Exec a ZAP scan
+    steps:
+      - name: Exec ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: 'https://juice-shop.herokuapp.com/'
+
